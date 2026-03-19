@@ -15,14 +15,9 @@ namespace Bowling_Tournament_Registration_System.Persistence.Daos
 		{
 			return _db.Players.Find(playerId);
 		}
-		public List<Player> GetByTeamId(int teamId)
+		public int GetCountByTeamId(int teamId)
 		{
-			return _db.Players.Where(p => p.TeamId == teamId).ToList();
-		}
-
-		public List<Player> GetAvailable()
-		{
-			return _db.Players.Where(p => p.TeamId == null).ToList();
+			return _db.Players.Count(p => p.TeamId == teamId);
 		}
 
 		public void Update(Player player)

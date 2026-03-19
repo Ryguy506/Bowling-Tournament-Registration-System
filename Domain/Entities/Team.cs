@@ -4,7 +4,7 @@
 	{
 		public int TeamId { get; set; }  
 
-		public int TeamName { get; set; }
+		public string TeamName { get; set; }
 		
 		public int DivisionId { get; set; }
 		public bool RegistrationPaid { get; set; } = false;
