@@ -1,7 +1,7 @@
 using Bowling_Tournament_Registration_System.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bowling_Tournament_Registration_System.Persistence
+namespace Bowling_Tournament_Registration_System.Persistence.Ef
 {
 	public class BowlingDbContext : DbContext
 	{

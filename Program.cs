@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Bowling_Tournament_Registration_System.Persistence.Ef;
+using Bowling_Tournament_Registration_System.Domain.Daos;
+using Bowling_Tournament_Registration_System.Persistence.Daos;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +18,17 @@ builder.Services.Configure<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions
 	options.ViewLocationFormats.Add("/Ui/Views/Shared/{0}.cshtml");
 });
 
-//var dbPath = Path.Combine(builder.Environment.ContentRootPath, "AppData", "btrs.db");
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//{
-//    options.UseSqlite($"Data Source={dbPath}");
-//});
+var dbPath = Path.Combine(builder.Environment.ContentRootPath, "AppData", "btrs.db");
+builder.Services.AddDbContext<BowlingDbContext>(options =>
+{
+    options.UseSqlite($"Data Source={dbPath}");
+});
+
+builder.Services.AddScoped<ITournamentDao, TournamentDao>();
+builder.Services.AddScoped<ITeamDao, TeamDao>();
+builder.Services.AddScoped<ITournamentRegistrationDao, TournamentRegistrationDao>();
+builder.Services.AddScoped<IUserDao, UserDao>();
+builder.Services.AddScoped<IPlayerDao, PlayerDao>();
 
 var app = builder.Build();
 

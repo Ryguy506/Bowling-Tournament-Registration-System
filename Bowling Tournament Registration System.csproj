@@ -8,10 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Dtos\" />
-    <Folder Include="Domain\Daos\" />
     <Folder Include="Domain\Services\" />
-    <Folder Include="Persistence\Daos\" />
     <Folder Include="Persistence\Queries\" />
     <Folder Include="Ui\Queries\" />
     <Folder Include="Ui\ReadModels\" />
