@@ -1,9 +1,11 @@
-﻿namespace Bowling_Tournament_Registration_System.Ui.Queries
+﻿using Bowling_Tournament_Registration_System.Ui.ReadModels
+
+namespace Bowling_Tournament_Registration_System.Ui.Queries
 {
     public interface ITournamentReadModelGateway
     {
-        List<TournamentListReadModel> GetAll();
+        List<TournamentOption> GetAll();
 
-        TournamentDetailsReadModel GetById(int id);
+        TournamentDetailsOption GetById(int id);
     }
 }
