@@ -9,9 +9,6 @@
 
   <ItemGroup>
     <Folder Include="Persistence\Queries\" />
-    <Folder Include="Ui\Queries\" />
-    <Folder Include="Ui\ReadModels\" />
-    <Folder Include="Ui\ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
