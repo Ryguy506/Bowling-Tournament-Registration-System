@@ -2,6 +2,7 @@ using Bowling_Tournament_Registration_System.Domain.Services;
 using Bowling_Tournament_Registration_System.Ui.Queries;
 using Bowling_Tournament_Registration_System.Ui.ReadModels;
 using Bowling_Tournament_Registration_System.Ui.ViewModels;
+using Bowling_Tournament_Registration_System.Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bowling_Tournament_Registration_System.Ui.Controllers
@@ -45,16 +46,18 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = _service.CreateTournament(
-                model.Name,
-                model.Date,
-                model.Location,
-                model.Capacity
-            );
-
-            if (!result.Success)
+            var tournamentRequest = new TournamentRequest
             {
-                ModelState.AddModelError("", result.ErrorMessage);
+                Name = model.Name,
+                TournamentDate = model.Date,
+                Location = model.Location,
+                Capacity = model.Capacity
+            };
+			var id = _service.CreateTournament(tournamentRequest);
+
+			if (id == 0)
+            {
+                ModelState.AddModelError("", "Failed to create tournament");
                 return View(model);
             }
 
@@ -88,17 +91,18 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var result = _service.UpdateTournament(
-                model.Id,
-                model.Name,
-                model.Date,
-                model.Location,
-                model.Capacity
-            );
-
-            if (!result.Success)
+            var tournamentRequest = new TournamentRequest
             {
-                ModelState.AddModelError("", result.ErrorMessage);
+                Name = model.Name,
+                TournamentDate = model.Date,
+                Location = model.Location,
+                Capacity = model.Capacity
+            };
+			var result = _service.UpdateTournament(model.Id, tournamentRequest);
+
+			if (!result)
+            {
+                ModelState.AddModelError("", "Error");
                 return View(model);
             }
                 

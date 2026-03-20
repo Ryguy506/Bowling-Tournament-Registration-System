@@ -2,6 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Bowling_Tournament_Registration_System.Persistence.Ef;
 using Bowling_Tournament_Registration_System.Domain.Daos;
 using Bowling_Tournament_Registration_System.Persistence.Daos;
+using Bowling_Tournament_Registration_System.Domain.Services;
+using Bowling_Tournament_Registration_System.Ui.Queries;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +32,9 @@ builder.Services.AddScoped<ITeamDao, TeamDao>();
 builder.Services.AddScoped<ITournamentRegistrationDao, TournamentRegistrationDao>();
 builder.Services.AddScoped<IUserDao, UserDao>();
 builder.Services.AddScoped<IPlayerDao, PlayerDao>();
+builder.Services.AddScoped<ITournamentManagementService, TournamentManagementService>();
+builder.Services.AddScoped<ITeamManagementService, TeamManagementService>();
+builder.Services.AddScoped<ITournamentRegistrationService , TournamentRegistrationService>();
 
 var app = builder.Build();
 
