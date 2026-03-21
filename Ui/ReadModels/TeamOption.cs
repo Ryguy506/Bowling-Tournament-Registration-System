@@ -7,6 +7,9 @@
         public string TeamName { get; set; }
 
         public int DivisionId { get; set; }
-        public  int PlayerCount { get; set; }
-    }
+
+        public bool RegistrationPaid { get; set; }
+
+		public DateTime? PaymentDate { get; set; }
+	}
 }

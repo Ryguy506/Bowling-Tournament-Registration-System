@@ -1,1 +1,39 @@
-﻿
+﻿@model List<Bowling_Tournament_Registration_System.Ui.ReadModels.TeamOption>
+
+@{
+    ViewData["Title"] = "Manage Teams";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Teams</h2>
+
+   
+   
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                <th>Name</th>
+                <th>Division Id</th>
+                <th>Registration Paid</th>
+                <th>Payment Date</th>
+                <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var team in Model)
+                {
+                    <tr>
+                        <td>@team.TeamName</td>
+                        <td>@team.DivisionId</td>
+                        <td>@(team.RegistrationPaid ? "Yes" : "No")</td>
+                    <td>@(team.RegistrationPaid ? team.PaymentDate?.ToShortDateString() : "")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@team.Id" class="btn btn-sm btn-primary">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-action="Create" class="btn btn-success">Create New Tournament</a>
+    
+</div>

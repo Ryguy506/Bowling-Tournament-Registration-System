@@ -36,6 +36,8 @@ builder.Services.AddScoped<ITournamentManagementService, TournamentManagementSer
 builder.Services.AddScoped<ITeamManagementService, TeamManagementService>();
 builder.Services.AddScoped<ITournamentRegistrationService , TournamentRegistrationService>();
 builder.Services.AddScoped<ITournamentReadModelGateway, TournamentReadModelGateway>();
+builder.Services.AddScoped<ITeamReadModelGateway, TeamReadModelGateway>();
+builder.Services.AddScoped<IPlayerReadModelGateway, PlayerReadModelGateway>();
 
 var app = builder.Build();
 

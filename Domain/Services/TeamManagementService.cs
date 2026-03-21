@@ -58,7 +58,8 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 		{
 			var player = _playerDao.GetById(playerId);
 			var team = _teamDao.GetById(teamId);
-			if (player == null || team == null || player.TeamId != null)
+			var teamPlayers = _playerDao.GetCountByTeamId(teamId);
+			if (player == null || team == null || player.TeamId != null || teamPlayers == 4)
 			{
 				return false;
 			}
