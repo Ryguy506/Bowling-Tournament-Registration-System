@@ -33,10 +33,35 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 		}
 
 		public TournamentDetailsOption GetById(int id) {
-			return  new TournamentDetailsOption { Id = id }; // add
+
+			var tournament = _context.Tournaments.Where(t => t.TournamentId == id)
+				.Select(t => new TournamentDetailsOption
+				{
+					Id = t.TournamentId,
+					Name = t.Name,
+					Date = t.TournamentDate,
+					Location = t.Location,
+					Capacity = t.Capacity,
+					RegistrationOpen = t.RegistrationOpen,
+					
+
+				}).FirstOrDefault();
+
+			if (tournament == null)
+				return null;
+
+			tournament.RegisteredTeams = _context.TournamentRegistrations.Where(tr => tr.TeamId == id)
+				.Join(_context.Teams , tr => tr.TeamId , t => t.TeamId, (tr , t ) => t.TeamName).ToList();
+
+			tournament.RegisteredCount = tournament.RegisteredTeams.Count;
+
+			return tournament;
 
 
-		}
+
+
+
+        }
 
 
 	}

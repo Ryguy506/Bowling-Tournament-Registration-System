@@ -23,7 +23,9 @@ namespace Bowling_Tournament_Registration_System.Persistence.Ef
 			modelBuilder.Entity<Player>().ToTable("Player");
 			modelBuilder.Entity<TournamentRegistration>()
 			.ToTable("TournamentRegistration")
-			.Property(tr => tr.Status)
+			.HasKey(tr => tr.RegistrationId);
+			modelBuilder.Entity<TournamentRegistration>()	
+            .Property(tr => tr.Status)
 			.HasConversion<string>();
 			modelBuilder.Entity<User>().ToTable("User");
 		}

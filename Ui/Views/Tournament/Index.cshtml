@@ -1,0 +1,42 @@
+﻿@model List<Bowling_Tournament_Registration_System.Ui.ReadModels.TournamentOption>
+
+@{
+    ViewData["Title"] = "Tournaments";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">Tournaments</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No tournaments available.</div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Spots Remaining</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tournament in Model)
+                {
+                    <tr>
+                        <td>@tournament.Name</td>
+                        <td>@tournament.Date.ToShortDateString()</td>
+                        <td>@tournament.Location</td>
+                        <td>@(tournament.Capacity - tournament.RegisteredCount)</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@tournament.Id" class="btn btn-sm btn-primary">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

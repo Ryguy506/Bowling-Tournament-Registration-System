@@ -14,6 +14,12 @@
 
         public int RegisteredCount { get; set; }
 
+        public bool RegistrationOpen { get; set; }
+
+        public int SpotsRemaining => Capacity - RegisteredCount;
+
         public List<string> RegisteredTeams { get; set; } = new();
+
+
     }
 }

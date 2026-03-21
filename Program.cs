@@ -4,7 +4,7 @@ using Bowling_Tournament_Registration_System.Domain.Daos;
 using Bowling_Tournament_Registration_System.Persistence.Daos;
 using Bowling_Tournament_Registration_System.Domain.Services;
 using Bowling_Tournament_Registration_System.Ui.Queries;
-
+using Bowling_Tournament_Registration_System.Persistence.Queries;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +35,7 @@ builder.Services.AddScoped<IPlayerDao, PlayerDao>();
 builder.Services.AddScoped<ITournamentManagementService, TournamentManagementService>();
 builder.Services.AddScoped<ITeamManagementService, TeamManagementService>();
 builder.Services.AddScoped<ITournamentRegistrationService , TournamentRegistrationService>();
+builder.Services.AddScoped<ITournamentReadModelGateway, TournamentReadModelGateway>();
 
 var app = builder.Build();
 
