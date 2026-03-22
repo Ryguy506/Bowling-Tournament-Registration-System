@@ -5,47 +5,17 @@
 <form asp-action="Register" method="post">
     <input type="hidden" asp-for="TournamentId" />
 
-    <table>
-        <thead>
-            <tr>
-                <th>Select</th>
-                <th>Team</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var team in Model.Teams)
-            {
-                <tr>
-                    <td>
-                        @if (team.IsEligible)
-                        {
-                            <input type="radio" asp-for="SelectedTeamId" value="@team.TeamId" />
-                        }
-                        else
-                        {
-                            <input type="radio" disabled />
-                        }
-                    </td>
-                    <td>@team.TeamName </td>
-                    <td>
-                        @if (team.IsEligible)
-                        {
-                            <span>Eligible</span>
-                        }
-                        else
-                        {
-                            <span>@team.ReasonNotEligible</span>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div style="max-height: 300px; overflow-y: auto;" class="mb-3 border rounded p-2">
+        @foreach (var team in Model.Teams)
+        {
+            <div class="form-check border-bottom m-2">
+                <input type="radio" class="form-check-input" asp-for="SelectedTeamId" value="@team.Id" id="team_@team.Id" />
+                <label class="form-check-label" for="team_@team.Id">@team.TeamName </label>
+            </div>
+        }
+    </div>
 
-    <button type="submit">Register</button>
+
+        <button class="btn btn-primary" type="submit">Register</button>
 </form>
 
-<div style="color:red;">
-    @Html.ValidationSummary()
-</div>

@@ -7,9 +7,8 @@ namespace Bowling_Tournament_Registration_System.Ui.ViewModels
     {
         public int TournamentId { get; set; }
 
-        public List<TeamRegistrationOption> Teams { get; set; } = new();
+        public List<TeamOption> Teams { get; set; } = new();
 
-        [Required(ErrorMessage = "Please select a team.")]
         public int SelectedTeamId { get; set; }
     }
 }

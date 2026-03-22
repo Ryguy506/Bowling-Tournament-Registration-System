@@ -42,7 +42,7 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
             var model = new RegisterTeamVm
             {
                 TournamentId = id,
-                Teams = _teamQueries.GetTeamsForTournament(id)
+                Teams = _teamQueries.GetAll()
             };
 
             return View(model);
@@ -51,10 +51,10 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
         [HttpPost]
         public IActionResult Register(RegisterTeamVm model)
         {
-            if (!ModelState.IsValid)
-            {
-                model.Teams = _teamQueries.GetTeamsForTournament(model.TournamentId);
-                return View(model);
+            if (model.SelectedTeamId == 0)
+            {   TempData["Error"] = "Please select a team.";
+				model.Teams = _teamQueries.GetAll();
+				return View(model);
             }
 
             var result = _service.RegisterTeam(
@@ -64,12 +64,12 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
 
             if (!result.Success)
             {
-                ModelState.AddModelError("", result.ErrorMessage);
-                model.Teams = _teamQueries.GetTeamsForTournament(model.TournamentId);
+                TempData["Error"] = result.ErrorMessage;
+				model.Teams = _teamQueries.GetAll();
                 return View(model);
             }
 
-            TempData["SuccessMessage"] = "Team registered successfully!";
+            TempData["Success"] = "Team registered successfully!";
             return RedirectToAction("Details", new { id = model.TournamentId });
         }
     }
