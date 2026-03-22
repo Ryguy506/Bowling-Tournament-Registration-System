@@ -8,5 +8,6 @@ namespace Bowling_Tournament_Registration_System.Domain.Entities
 		public int TeamId { get; set; }
 		public DateTime RegisteredOn { get; set; }
 		public RegistrationStatus Status { get; set; }
-	}
+        public Team Team { get; set; }
+    }
 }

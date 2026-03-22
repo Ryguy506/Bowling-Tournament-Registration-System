@@ -50,8 +50,8 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 			if (tournament == null)
 				return null;
 
-			tournament.RegisteredTeams = _context.TournamentRegistrations.Where(tr => tr.TeamId == id)
-				.Join(_context.Teams , tr => tr.TeamId , t => t.TeamId, (tr , t ) => t.TeamName).ToList();
+			tournament.RegisteredTeams = _context.TournamentRegistrations.Where(tr => tr.TournamentId == id)
+                .Join(_context.Teams , tr => tr.TeamId , t => t.TeamId, (tr , t ) => t.TeamName).ToList();
 
 			tournament.RegisteredCount = tournament.RegisteredTeams.Count;
 

@@ -27,8 +27,47 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
 			return View(teams);
 		}
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            var model = new CreateTeamVm
+            {
+                Divisions = _Teamqueries.GetAll() 
+            };
 
-		public IActionResult Edit(int id)
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateTeamVm model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Divisions = _Teamqueries.GetAll();
+                return View(model);
+            }
+
+            var request = new TeamRequest
+            {
+                TeamName = model.TeamName,
+                DivisionId = model.DivisionId
+            };
+
+            int teamId = _service.CreateTeam(request);
+
+            if (teamId <= 0)
+            {
+                TempData["Error"] = "Failed to create team.";
+                model.Divisions = _Teamqueries.GetAll();
+                return View(model);
+            }
+
+            TempData["Success"] = "Team created successfully.";
+
+            return RedirectToAction("Edit", new { id = teamId });
+        }
+
+        public IActionResult Edit(int id)
 		{
 			var model = new EditTeamVm
 			{
@@ -84,5 +123,22 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
 			return RedirectToAction("Edit", new { id = teamId });
 		}
 
-	}
+        [HttpPost]
+        public IActionResult MarkAsPaid(int id)
+        {
+            var result = _service.MarkAsPaid(id);
+
+            if (!result)
+            {
+                TempData["Error"] = "Failed to mark team as paid";
+            }
+            else
+            {
+                TempData["SuccessMessage"] = "Payment recorded successfully.";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+    }
 }

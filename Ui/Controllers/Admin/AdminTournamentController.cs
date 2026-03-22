@@ -10,13 +10,17 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
 	[Authorize]
 	public class AdminTournamentController : Controller
     {
+        private readonly ITeamReadModelGateway _teamQueries;
         private readonly ITournamentReadModelGateway _queries;
         private readonly ITournamentManagementService _service;
+        private readonly ITournamentRegistrationService _RegService;
 
-        public AdminTournamentController(ITournamentReadModelGateway queries, ITournamentManagementService service)
+
+        public AdminTournamentController(ITournamentReadModelGateway queries, ITournamentManagementService service, ITeamReadModelGateway teamQueries)
         {
             _queries = queries;
             _service = service;
+            _teamQueries = teamQueries;
         }
 
         public IActionResult Index()

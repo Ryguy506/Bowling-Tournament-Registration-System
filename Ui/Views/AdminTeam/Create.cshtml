@@ -1,0 +1,29 @@
+﻿@model Bowling_Tournament_Registration_System.Ui.ViewModels.CreateTeamVm
+
+<h2>Create Team</h2>
+
+@if (TempData["Error"] != null)
+{
+	<div>@TempData["Error"]</div>
+}
+
+<form asp-action="Create" method="post">
+
+	<div>
+		<label>Team Name</label>
+		<input asp-for="TeamName" />
+	</div>
+
+	<div>
+		<label>Division</label>
+		<select asp-for="DivisionId">
+			<option value="">Select Division</option>
+			@foreach (var d in Model.Divisions)
+			{
+				<option value="@d.Id">@d.TeamName</option>
+			}
+		</select>
+	</div>
+
+	<button type="submit">Create</button>
+</form>

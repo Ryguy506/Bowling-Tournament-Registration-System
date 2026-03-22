@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-4">
-    <h2 class="mb-3">Teams</h2>
+    <h2 class="mb-3">Teams <a asp-action="Create" class="btn btn-sm btn-primary">Create Team</a></h2>
 
    
    
@@ -29,6 +29,17 @@
                     <td>@(team.RegistrationPaid ? team.PaymentDate?.ToShortDateString() : "")</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@team.Id" class="btn btn-sm btn-primary">Edit</a>
+                        @if (!team.RegistrationPaid)
+                        {
+                            <form asp-action="MarkAsPaid" method="post">
+                                <input type="hidden" name="id" value="@team.Id" />
+                                <button type="submit">Mark as Paid</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button disabled>Already Paid</button>
+                        }
                         </td>
                     </tr>
                 }

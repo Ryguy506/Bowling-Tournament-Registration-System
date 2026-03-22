@@ -9,13 +9,15 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
 {
     public class TournamentController : Controller
     {
+        private readonly ITeamReadModelGateway _teamQueries;
         private readonly ITournamentReadModelGateway _queries;
-        private readonly ITournamentManagementService _service;
+        private readonly ITournamentRegistrationService _service;
 
-        public TournamentController(ITournamentReadModelGateway queries, ITournamentManagementService service)
+        public TournamentController(ITournamentReadModelGateway queries, ITeamReadModelGateway teamQueries, ITournamentRegistrationService service)
         {
             _queries = queries;
             _service = service;
+            _teamQueries = teamQueries;
         }
 
         public IActionResult Index()
@@ -32,6 +34,43 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
                 return NotFound();
 
             return View(tournament);
+        }
+
+        [HttpGet]
+        public IActionResult Register(int id) 
+        {
+            var model = new RegisterTeamVm
+            {
+                TournamentId = id,
+                Teams = _teamQueries.GetTeamsForTournament(id)
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Register(RegisterTeamVm model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.Teams = _teamQueries.GetTeamsForTournament(model.TournamentId);
+                return View(model);
+            }
+
+            var result = _service.RegisterTeam(
+                model.TournamentId,
+                model.SelectedTeamId
+            );
+
+            if (!result.Success)
+            {
+                ModelState.AddModelError("", result.ErrorMessage);
+                model.Teams = _teamQueries.GetTeamsForTournament(model.TournamentId);
+                return View(model);
+            }
+
+            TempData["SuccessMessage"] = "Team registered successfully!";
+            return RedirectToAction("Details", new { id = model.TournamentId });
         }
     }
 }

@@ -5,8 +5,10 @@ namespace Bowling_Tournament_Registration_System.Ui.Queries
 	{
 		List<TeamOption> GetAll();
 
-		TeamOption GetById(int id); 
+		TeamOption GetById(int id);
 
-        
-	}
+        List<TeamRegistrationOption> GetTeamsForTournament(int tournamentId);
+
+
+    }
 }
