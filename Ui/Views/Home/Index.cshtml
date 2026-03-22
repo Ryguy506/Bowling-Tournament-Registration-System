@@ -7,10 +7,17 @@
     <a asp-controller="Tournament" asp-action="Index" class="btn btn-primary">View Tournaments</a>
 </div>
 
-<div class="text-center">
-    <a asp-controller="AdminTournament" asp-action="Index" class="btn btn-primary">Manage Tournaments</a>
-</div>
-
-<div class="text-center">
-    <a asp-controller="AdminTeam" asp-action="Index" class="btn btn-primary">Manage Teams</a>
-</div>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="text-center mt-2">
+        <a asp-controller="AdminTournament" asp-action="Index" class="btn btn-warning">Manage Tournaments</a>
+        <a asp-controller="AdminTeam" asp-action="Index" class="btn btn-warning">Manage Teams</a>
+        <a asp-controller="Auth" asp-action="Logout" class="btn btn-danger">Logout</a>
+    </div>
+}
+else
+{
+    <div class="text-center mt-2">
+        <a asp-controller="Auth" asp-action="Login" class="btn btn-secondary">Admin Login</a>
+    </div>
+}

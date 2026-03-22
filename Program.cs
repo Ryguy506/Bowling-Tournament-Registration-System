@@ -1,10 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Bowling_Tournament_Registration_System.Persistence.Ef;
 using Bowling_Tournament_Registration_System.Domain.Daos;
-using Bowling_Tournament_Registration_System.Persistence.Daos;
 using Bowling_Tournament_Registration_System.Domain.Services;
-using Bowling_Tournament_Registration_System.Ui.Queries;
+using Bowling_Tournament_Registration_System.Persistence.Daos;
+using Bowling_Tournament_Registration_System.Persistence.Ef;
 using Bowling_Tournament_Registration_System.Persistence.Queries;
+using Bowling_Tournament_Registration_System.Ui.Queries;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,10 +35,18 @@ builder.Services.AddScoped<IUserDao, UserDao>();
 builder.Services.AddScoped<IPlayerDao, PlayerDao>();
 builder.Services.AddScoped<ITournamentManagementService, TournamentManagementService>();
 builder.Services.AddScoped<ITeamManagementService, TeamManagementService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITournamentRegistrationService , TournamentRegistrationService>();
 builder.Services.AddScoped<ITournamentReadModelGateway, TournamentReadModelGateway>();
 builder.Services.AddScoped<ITeamReadModelGateway, TeamReadModelGateway>();
 builder.Services.AddScoped<IPlayerReadModelGateway, PlayerReadModelGateway>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+	.AddCookie(options =>
+	{
+		options.LoginPath = "/Auth/Login";
+		options.AccessDeniedPath = "/Auth/AccessDenied";
+	});
 
 var app = builder.Build();
 
@@ -54,6 +63,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

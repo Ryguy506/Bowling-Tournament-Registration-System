@@ -1,12 +1,14 @@
+using Bowling_Tournament_Registration_System.Domain.Dtos;
 using Bowling_Tournament_Registration_System.Domain.Services;
 using Bowling_Tournament_Registration_System.Ui.Queries;
 using Bowling_Tournament_Registration_System.Ui.ViewModels;
-using Bowling_Tournament_Registration_System.Domain.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
 {
-    public class AdminTournamentController : Controller
+	[Authorize]
+	public class AdminTournamentController : Controller
     {
         private readonly ITournamentReadModelGateway _queries;
         private readonly ITournamentManagementService _service;

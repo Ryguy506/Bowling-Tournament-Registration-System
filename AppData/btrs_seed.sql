@@ -67,8 +67,7 @@ CREATE INDEX IX_TournamentRegistration_TeamId ON TournamentRegistration(TeamId);
 
 INSERT INTO User (Username, Password)
 VALUES 
-    ('admin', 'admin123'),
-    ('user', 'user123');
+    ('admin', 'admin123');
 
 
 INSERT INTO Tournament (Name, TournamentDate, Location, Capacity, RegistrationOpen)

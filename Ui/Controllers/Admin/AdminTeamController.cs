@@ -3,9 +3,11 @@ using Bowling_Tournament_Registration_System.Domain.Services;
 using Bowling_Tournament_Registration_System.Ui.Queries;
 using Bowling_Tournament_Registration_System.Ui.ReadModels;
 using Bowling_Tournament_Registration_System.Ui.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
 {
+	[Authorize]
 	public class AdminTeamController : Controller
 	{
 		private readonly ITeamReadModelGateway _Teamqueries;

@@ -4,6 +4,6 @@ namespace Bowling_Tournament_Registration_System.Domain.Daos
 {
 	public interface IUserDao
 	{
-		User GetUser (string username);
+		bool Authenticate(string username , string password);
 	}
 }
