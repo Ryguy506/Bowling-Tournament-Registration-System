@@ -30,10 +30,7 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
         [HttpGet]
         public IActionResult Create()
         {
-            var model = new CreateTeamVm
-            {
-                Divisions = _Teamqueries.GetAll() 
-            };
+			var model = new CreateTeamVm();
 
             return View(model);
         }
@@ -134,7 +131,7 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
             }
             else
             {
-                TempData["SuccessMessage"] = "Payment recorded successfully.";
+                TempData["Success"] = "Payment recorded successfully.";
             }
 
             return RedirectToAction("Index");

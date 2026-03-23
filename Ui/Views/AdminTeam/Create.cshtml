@@ -2,11 +2,6 @@
 
 <h2>Create Team</h2>
 
-@if (TempData["Error"] != null)
-{
-	<div>@TempData["Error"]</div>
-}
-
 <form asp-action="Create" method="post">
 
 	<div>
@@ -16,13 +11,7 @@
 
 	<div>
 		<label>Division</label>
-		<select asp-for="DivisionId">
-			<option value="">Select Division</option>
-			@foreach (var d in Model.Divisions)
-			{
-				<option value="@d.Id">@d.TeamName</option>
-			}
-		</select>
+		<input asp-for="DivisionId" />
 	</div>
 
 	<button type="submit">Create</button>
