@@ -7,5 +7,7 @@ namespace Bowling_Tournament_Registration_System.Domain.Daos
 		bool Exists(int tournamentId, int teamId);  
 		int GetCountByTournament(int tournamentId); 
 		void Add(TournamentRegistration registration);
+
+		int GetWaitlistCount(int tournamentId);
 	}
 }

@@ -3,6 +3,7 @@
 	public class RegistrationResult
 	{
 		public bool Success { get; set; }
+		public bool IsWaitlisted { get; set; }
 		public string? ErrorMessage { get; set; }
 
 		public static RegistrationResult Ok()
@@ -13,6 +14,11 @@
 		public static RegistrationResult Fail(string message)
 		{
 			return new RegistrationResult { Success = false, ErrorMessage = message };
+		}
+
+		public static RegistrationResult Waitlisted()
+			{
+			return new RegistrationResult { Success = true, IsWaitlisted = true };
 		}
 	}
 }

@@ -65,11 +65,19 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
             if (!result.Success)
             {
                 TempData["Error"] = result.ErrorMessage;
-				model.Teams = _teamQueries.GetAll();
+                model.Teams = _teamQueries.GetAll();
                 return View(model);
             }
 
-            TempData["Success"] = "Team registered successfully!";
+            if (result.IsWaitlisted)
+            {
+                TempData["Info"] = "Team is waitlisted due to tournament capacity.";
+            }
+            else
+            {
+
+                TempData["Success"] = "Team registered successfully!";
+            }
             return RedirectToAction("Details", new { id = model.TournamentId });
         }
     }

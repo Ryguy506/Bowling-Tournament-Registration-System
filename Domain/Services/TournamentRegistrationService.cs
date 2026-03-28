@@ -32,17 +32,25 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 			if (_tournamentRegistrationDao.Exists(tournamentId, teamId))
 				return RegistrationResult.Fail("Team is already registered for this tournament.");
 
-			if (_tournamentRegistrationDao.GetCountByTournament(tournamentId) >= tournament.Capacity)
-				return RegistrationResult.Fail("Tournament is at full capacity.");
-			
 			var registration = new TournamentRegistration
-				{
+			{
 				TournamentId = tournamentId,
 				TeamId = teamId,
 				RegisteredOn = DateTime.UtcNow,
-				Status = RegistrationStatus.Confirmed,
+				
 			};
 
+			bool isFull = _tournamentRegistrationDao.GetCountByTournament(tournamentId) >= tournament.Capacity;
+
+			if (isFull)
+			{
+				registration.Status = RegistrationStatus.Waitlisted;
+				registration.WaitlistPosition = _tournamentRegistrationDao.GetWaitlistCount(tournamentId) + 1;
+				_tournamentRegistrationDao.Add(registration);
+				return RegistrationResult.Waitlisted();
+			}
+
+			registration.Status = RegistrationStatus.Confirmed;
 			_tournamentRegistrationDao.Add(registration);
 			return RegistrationResult.Ok();
 
