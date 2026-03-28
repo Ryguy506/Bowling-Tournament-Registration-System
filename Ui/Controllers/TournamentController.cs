@@ -71,13 +71,13 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
 
             if (result.IsWaitlisted)
             {
-                TempData["SuccessMessage"] = "Tournament is full. Team added to waitlist.";
+                TempData["Info"] = "Team is waitlisted due to tournament capacity.";
             }
             else
             {
-                TempData["SuccessMessage"] = "Team registered successfully!";
-            }
 
+                TempData["Success"] = "Team registered successfully!";
+            }
             return RedirectToAction("Details", new { id = model.TournamentId });
         }
     }

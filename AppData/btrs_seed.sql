@@ -52,7 +52,8 @@ CREATE TABLE TournamentRegistration (
     TournamentId INTEGER NOT NULL,
     TeamId INTEGER NOT NULL,
     RegisteredOn TEXT NOT NULL,
-    Status TEXT NOT NULL DEFAULT 'Pending' CHECK (Status IN ('Pending', 'Confirmed', 'Cancelled')),
+    Status TEXT NOT NULL DEFAULT 'Pending' CHECK (Status IN ('Pending', 'Confirmed', 'Cancelled' , 'Waitlisted')),
+    WaitlistPosition INTEGER NULL,
     FOREIGN KEY (TournamentId) REFERENCES Tournament(TournamentId),
     FOREIGN KEY (TeamId) REFERENCES Team(TeamId),
     UNIQUE (TournamentId, TeamId)
