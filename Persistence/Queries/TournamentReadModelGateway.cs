@@ -1,5 +1,6 @@
-﻿using Bowling_Tournament_Registration_System.Ui.Queries;
+﻿using Bowling_Tournament_Registration_System.Domain.Entities;
 using Bowling_Tournament_Registration_System.Persistence.Ef;
+using Bowling_Tournament_Registration_System.Ui.Queries;
 using Bowling_Tournament_Registration_System.Ui.ReadModels;
 namespace Bowling_Tournament_Registration_System.Persistence.Queries
 {
@@ -17,7 +18,7 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 		{
 			return _context.Tournaments
 			.GroupJoin(
-				_context.TournamentRegistrations,
+				_context.TournamentRegistrations.Where(r => r.Status == RegistrationStatus.Confirmed),
 					t => t.TournamentId,
 					tr => tr.TournamentId,
 					(t, regs) => new TournamentOption
@@ -44,16 +45,27 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 					Capacity = t.Capacity,
 					RegistrationOpen = t.RegistrationOpen,
 					
+					
 
 				}).FirstOrDefault();
 
 			if (tournament == null)
 				return null;
 
-			tournament.RegisteredTeams = _context.TournamentRegistrations.Where(tr => tr.TournamentId == id)
+			tournament.RegisteredTeams = _context.TournamentRegistrations.Where(tr => tr.TournamentId == id && tr.Status == RegistrationStatus.Confirmed)
                 .Join(_context.Teams , tr => tr.TeamId , t => t.TeamId, (tr , t ) => t.TeamName).ToList();
 
+			tournament.WaitlistedTeams = _context.TournamentRegistrations.Where(tr => tr.TournamentId == id && tr.Status == RegistrationStatus.Waitlisted)
+				 .OrderBy(tr => tr.WaitlistPosition)
+				.Join(_context.Teams, tr => tr.TeamId, t => t.TeamId, (tr, t) => new WaitlistEntry
+				{
+					Position = tr.WaitlistPosition ?? 0,
+					TeamName = t.TeamName
+				})
+				.ToList();
+
 			tournament.RegisteredCount = tournament.RegisteredTeams.Count;
+			
 
 			return tournament;
 

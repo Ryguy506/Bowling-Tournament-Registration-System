@@ -18,7 +18,9 @@
 
         public int SpotsRemaining => Capacity - RegisteredCount;
 
-        public List<string> RegisteredTeams { get; set; } = new();
+        public List<WaitlistEntry> WaitlistedTeams { get; set; } = new();
+
+		public List<string> RegisteredTeams { get; set; } = new();
 
 
     }
