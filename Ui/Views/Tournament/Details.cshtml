@@ -58,25 +58,30 @@
     </div>
 
     <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Waitlisted Teams</h5>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Waitlisted Teams</h5>
 
-            @if (!Model.WaitlistedTeams.Any())
-        {
-            <p class="text-muted">No teams on the waitlist.</p>
+                    @if (!Model.WaitlistedTeams.Any())
+                    {
+                        <p class="text-muted">No teams on the waitlist.</p>
+                    }
+                    else
+                    {
+                        <ul class="list-group">
+                            @foreach (var team in Model.WaitlistedTeams)
+                            {
+                                <li class="list-group-item">
+                                    @team.Position - @team.TeamName
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
         }
-        else
-        {
-            <ul class="list-group">
-                @foreach (var team in Model.WaitlistedTeams)
-                {
-                <li class="list-group-item">
-                    @team.Position - @team.TeamName
-                </li>
-                }
-            </ul>
-        }
-        </div>
     </div>
 
     @if (Model.RegistrationOpen)

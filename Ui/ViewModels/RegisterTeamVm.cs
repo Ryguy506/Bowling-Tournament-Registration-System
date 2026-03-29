@@ -10,5 +10,6 @@ namespace Bowling_Tournament_Registration_System.Ui.ViewModels
         public List<TeamOption> Teams { get; set; } = new();
 
         public int SelectedTeamId { get; set; }
+        public bool IsWaitlisted { get; set; }
     }
 }
