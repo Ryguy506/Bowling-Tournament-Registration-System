@@ -11,17 +11,11 @@
             <div class="form-check border-bottom m-2">
                 @if (team.IsEligible)
                 {
-                    <input type="radio"
-                           class="form-check-input"
-                           asp-for="SelectedTeamId"
-                           value="@team.Id"
-                           id="team_@team.Id" />
+                    <input type="radio" class="form-check-input" asp-for="SelectedTeamId" value="@team.Id" id="team_@team.Id" />
                 }
                 else
                 {
-                    <input type="radio"
-                           class="form-check-input"
-                           disabled />
+                    <input type="radio" class="form-check-input" disabled />
                 }
 
                 <label class="form-check-label w-100" for="team_@team.Id">
