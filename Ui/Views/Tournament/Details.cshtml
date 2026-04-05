@@ -58,6 +58,24 @@
     </div>
 
     <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Division Capacities</h5>
+
+            <ul class="list-group">
+                @foreach (var division in Model.DivisionCapacities)
+                {
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>@division.DivisionName</span>
+                        <span>
+                            @division.RegisteredCount / @division.Capacity
+                        </span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
             <div class="card mb-4">

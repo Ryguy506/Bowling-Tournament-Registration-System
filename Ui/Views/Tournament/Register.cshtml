@@ -9,8 +9,48 @@
         @foreach (var team in Model.Teams)
         {
             <div class="form-check border-bottom m-2">
-                <input type="radio" class="form-check-input" asp-for="SelectedTeamId" value="@team.Id" id="team_@team.Id" />
-                <label class="form-check-label" for="team_@team.Id">@team.TeamName </label>
+                @if (team.IsEligible)
+                {
+                    <input type="radio"
+                           class="form-check-input"
+                           asp-for="SelectedTeamId"
+                           value="@team.Id"
+                           id="team_@team.Id" />
+                }
+                else
+                {
+                    <input type="radio"
+                           class="form-check-input"
+                           disabled />
+                }
+
+                <label class="form-check-label w-100" for="team_@team.Id">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <strong>@team.TeamName</strong><br />
+                            <small class="text-muted">@team.DivisionName</small>
+                        </div>
+
+                        <div>
+                            @if (team.IsEligible)
+                            {
+                                <span class="text-success">Eligible</span>
+                            }
+                            else if (team.DivisionFull)
+                            {
+                                <span class="text-warning">Division Full (Waitlist)</span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">@team.ReasonNotEligible</span>
+                            }
+                        </div>
+
+                    </div>
+
+                </label>
             </div>
         }
     </div>
@@ -19,3 +59,4 @@
         <button class="btn btn-primary" type="submit">Register</button>
 </form>
 
+    
