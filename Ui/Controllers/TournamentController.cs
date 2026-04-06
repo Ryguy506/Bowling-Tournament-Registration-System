@@ -80,5 +80,18 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
             }
             return RedirectToAction("Details", new { id = model.TournamentId });
         }
+
+        [HttpPost]
+        public IActionResult CancelRegistration(int tournamentId, int teamId)
+        {
+            var result = _service.CancelRegistration(tournamentId, teamId);
+
+            if (!result.Success)
+                TempData["ErrorMessage"] = result.ErrorMessage;
+            else
+                TempData["SuccessMessage"] = "Registration cancelled.";
+
+            return RedirectToAction("Details", new { id = tournamentId });
+        }
     }
 }
