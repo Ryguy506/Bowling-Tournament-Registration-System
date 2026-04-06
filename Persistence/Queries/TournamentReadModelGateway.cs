@@ -53,7 +53,7 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 				return null;
 
 			tournament.RegisteredTeams = _context.TournamentRegistrations
-				.Where(tr => tr.TournamentId == t.TournamentId && tr.Status == RegistrationStatus.Confirmed)
+				.Where(tr => tr.TournamentId == tournament.Id && tr.Status == RegistrationStatus.Confirmed)
 				.Join(_context.Teams,
 					tr => tr.TeamId,
 					team => team.TeamId,
@@ -62,7 +62,7 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 						Id = team.TeamId,
 						TeamName = team.TeamName
 					})
-				.ToList();
+					.ToList();
 
 
             tournament.WaitlistedTeams = _context.TournamentRegistrations.Where(tr => tr.TournamentId == id && tr.Status == RegistrationStatus.Waitlisted)

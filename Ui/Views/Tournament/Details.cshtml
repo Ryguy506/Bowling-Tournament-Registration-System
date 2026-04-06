@@ -58,7 +58,7 @@
                             {
                                 <form asp-action="CancelRegistration" method="post" class="ms-2">
                                     <input type="hidden" name="tournamentId" value="@Model.Id" />
-                                    <input type="hidden" name="teamId" value="@team.TeamId" />
+                                    <input type="hidden" name="teamId" value="@team.Id" />
                                     <button class="btn btn-danger btn-sm"
                                             onclick="return confirm('Cancel this registration?');">
                                         Cancel

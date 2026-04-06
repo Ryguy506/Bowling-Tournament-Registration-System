@@ -34,5 +34,21 @@ namespace Bowling_Tournament_Registration_System.Persistence.Daos
 		{
 			return _db.TournamentRegistrations.Count(tr => tr.TournamentId == tournamentId && tr.Status == RegistrationStatus.Waitlisted);
 		}
+
+		public TournamentRegistration GetById(int tournamentId, int teamId)
+		{
+			return _db.TournamentRegistrations.FirstOrDefault(tr => tr.TournamentId == tournamentId && tr.TeamId == teamId);
+		}
+
+		public List<TournamentRegistration> GetAllWaitlist(int tournamentId)
+		{
+			return _db.TournamentRegistrations.Where(tr => tr.TournamentId == tournamentId && tr.Status == RegistrationStatus.Waitlisted).ToList();
+		}
+
+		public void SaveChanges()
+		{
+			_db.SaveChanges();
+		}
+		
 	}
 }

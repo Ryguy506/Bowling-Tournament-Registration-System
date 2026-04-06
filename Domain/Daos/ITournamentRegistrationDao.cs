@@ -9,5 +9,13 @@ namespace Bowling_Tournament_Registration_System.Domain.Daos
 		void Add(TournamentRegistration registration);
 
 		int GetWaitlistCount(int tournamentId);
+
+		TournamentRegistration GetById(int tournamentId, int teamId);
+
+		List<TournamentRegistration> GetAllWaitlist(int tournamentId);
+
+
+		void SaveChanges();
+
 	}
 }

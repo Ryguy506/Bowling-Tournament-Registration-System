@@ -86,10 +86,10 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
         {
             var result = _service.CancelRegistration(tournamentId, teamId);
 
-            if (!result.Success)
-                TempData["ErrorMessage"] = result.ErrorMessage;
+            if (!result)
+                TempData["Error"] = "Registration not found or already cancelled.";
             else
-                TempData["SuccessMessage"] = "Registration cancelled.";
+                TempData["Info"] = "Registration cancelled.";
 
             return RedirectToAction("Details", new { id = tournamentId });
         }
