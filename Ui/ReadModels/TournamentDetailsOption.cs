@@ -22,6 +22,8 @@
 
 		public List<TeamOption> RegisteredTeams { get; set; } = new();
 
+        public List<DivisionCapacityReadModel> DivisionCapacities { get; set; } = new();
+
 
     }
 }

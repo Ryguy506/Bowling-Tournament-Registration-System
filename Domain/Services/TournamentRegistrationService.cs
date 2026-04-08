@@ -9,16 +9,18 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 		private readonly ITournamentDao _tournamentDao;
 		private readonly ITournamentRegistrationDao _tournamentRegistrationDao;
 		private readonly IPlayerDao _playerDao;
-		public TournamentRegistrationService(ITeamDao teamDao, ITournamentDao tournamentDao, ITournamentRegistrationDao registrationDao, IPlayerDao playerDao)
-		{
-			_teamDao = teamDao;
-			_tournamentDao = tournamentDao;
-			_tournamentRegistrationDao = registrationDao;
-			_playerDao = playerDao;
+        private readonly ITournamentDivisionCapacityDao _divisionCapacityDao;
 
-		}
+        public TournamentRegistrationService(ITeamDao teamDao, ITournamentDao tournamentDao , ITournamentRegistrationDao registrationDao, IPlayerDao playerDao, ITournamentDivisionCapacityDao divisionCapacityDao)
+        {
+            _teamDao = teamDao;
+            _tournamentDao = tournamentDao;
+            _tournamentRegistrationDao = registrationDao;
+            _playerDao = playerDao;
+            _divisionCapacityDao = divisionCapacityDao;
+        }
 
-		public RegistrationResult RegisterTeam(int tournamentId, int teamId)
+        public RegistrationResult RegisterTeam(int tournamentId, int teamId)
 		{
 			var tournament = _tournamentDao.GetById(tournamentId);
 			var team = _teamDao.GetById(teamId);
@@ -32,29 +34,37 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 			if (_tournamentRegistrationDao.Exists(tournamentId, teamId))
 				return RegistrationResult.Fail("Team is already registered for this tournament.");
 
-			var registration = new TournamentRegistration
-			{
-				TournamentId = tournamentId,
-				TeamId = teamId,
-				RegisteredOn = DateTime.UtcNow,
+            int totalRegistered = _tournamentRegistrationDao.GetCountByTournament(tournamentId);
 
-			};
+            int divisionRegistered = _tournamentRegistrationDao
+                .GetCountByTournamentAndDivision(tournamentId, team.DivisionId);
 
-			bool isFull = _tournamentRegistrationDao.GetCountByTournament(tournamentId) >= tournament.Capacity;
+            int divisionCapacity = _divisionCapacityDao
+                .GetCapacity(tournamentId, team.DivisionId);
 
-			if (isFull)
-			{
-				registration.Status = RegistrationStatus.Waitlisted;
-				registration.WaitlistPosition = _tournamentRegistrationDao.GetWaitlistCount(tournamentId) + 1;
-				_tournamentRegistrationDao.Add(registration);
-				return RegistrationResult.Waitlisted();
-			}
+            bool tournamentFull = totalRegistered >= tournament.Capacity;
+            bool divisionFull = divisionRegistered >= divisionCapacity;
 
-			registration.Status = RegistrationStatus.Confirmed;
-			_tournamentRegistrationDao.Add(registration);
-			return RegistrationResult.Ok();
+            var registration = new TournamentRegistration
+            {
+                TournamentId = tournamentId,
+                TeamId = teamId,
+                RegisteredOn = DateTime.UtcNow
+            };
+            
+            if (tournamentFull || divisionFull)
+            {
+                registration.Status = RegistrationStatus.Waitlisted;
+                registration.WaitlistPosition =
+                    _tournamentRegistrationDao.GetWaitlistCount(tournamentId) + 1;
 
+                _tournamentRegistrationDao.Add(registration);
 
+                return RegistrationResult.Waitlisted();
+            }
+
+            registration.Status = RegistrationStatus.Confirmed;
+            _tournamentRegistrationDao.Add(registration);
 
 		}
 

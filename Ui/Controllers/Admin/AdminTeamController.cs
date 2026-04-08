@@ -14,7 +14,7 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
 		private readonly IPlayerReadModelGateway _Playerqueries;
 		private readonly ITeamManagementService _service;
 
-		public AdminTeamController(ITeamReadModelGateway Tqueries, IPlayerReadModelGateway Pqueries  ,  ITeamManagementService service)
+		public AdminTeamController(ITeamReadModelGateway Tqueries, IPlayerReadModelGateway Pqueries,  ITeamManagementService service)
 		{
 			_service = service;
 			_Teamqueries = Tqueries;
