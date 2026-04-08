@@ -27,10 +27,10 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 
 			if (_playerDao.GetCountByTeamId(teamId) != 4)
 				return RegistrationResult.Fail("Team must have exactly 4 players to register.");
-			
+
 			if (!team.RegistrationPaid)
 				return RegistrationResult.Fail("Team must pay registration fee first");
-			
+
 			if (_tournamentRegistrationDao.Exists(tournamentId, teamId))
 				return RegistrationResult.Fail("Team is already registered for this tournament.");
 
@@ -66,7 +66,39 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
             registration.Status = RegistrationStatus.Confirmed;
             _tournamentRegistrationDao.Add(registration);
 
-            return RegistrationResult.Ok();
-        }
+		}
+
+
+		public bool CancelRegistration(int tournamentId, int teamId )
+		{
+			var registration = _tournamentRegistrationDao.GetById(tournamentId, teamId);
+			if (registration == null || registration.Status == RegistrationStatus.Cancelled)
+				return false;
+
+			registration.Status = RegistrationStatus.Cancelled;
+			_tournamentRegistrationDao.SaveChanges();
+
+			PromoteWaitlist(registration.TournamentId);
+			return true;
+		}
+
+		public void PromoteWaitlist(int tournamentId)
+		{
+			var waitlist = _tournamentRegistrationDao.GetAllWaitlist(tournamentId);
+			if (waitlist.Count == 0)
+				return;
+			var nextInLine = waitlist.OrderBy(w => w.WaitlistPosition).First();
+
+			nextInLine.Status = RegistrationStatus.Confirmed;
+			nextInLine.WaitlistPosition = null;
+			foreach (var w in waitlist.Where(w => w.WaitlistPosition > 1))
+			{
+				w.WaitlistPosition -= 1;
+			}
+			_tournamentRegistrationDao.SaveChanges();
+		}
+
+
 	}
+	
 }
