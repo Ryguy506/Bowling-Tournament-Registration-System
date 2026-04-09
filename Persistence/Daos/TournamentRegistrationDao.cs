@@ -45,6 +45,11 @@ namespace Bowling_Tournament_Registration_System.Persistence.Daos
 			return _db.TournamentRegistrations.Where(tr => tr.TournamentId == tournamentId && tr.Status == RegistrationStatus.Waitlisted).ToList();
 		}
 
+		public int GetCountByTournamentAndDivision(int tournamentId, int divisionId)
+		{
+			return _db.TournamentRegistrations.Count(tr => tr.TournamentId == tournamentId && tr.Team.DivisionId == divisionId && tr.Status == RegistrationStatus.Confirmed);
+		}
+
 		public void SaveChanges()
 		{
 			_db.SaveChanges();

@@ -13,8 +13,8 @@ namespace Bowling_Tournament_Registration_System.Domain.Daos
 		TournamentRegistration GetById(int tournamentId, int teamId);
 
 		List<TournamentRegistration> GetAllWaitlist(int tournamentId);
-    
-    int GetCountByTournamentAndDivision(int tournamentId, int divisionId);
+
+		int GetCountByTournamentAndDivision(int tournamentId, int divisionId);
 		void SaveChanges();
 
 	}

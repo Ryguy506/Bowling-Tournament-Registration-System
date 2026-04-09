@@ -9,6 +9,8 @@ DROP TABLE IF EXISTS Player;
 DROP TABLE IF EXISTS Team;
 DROP TABLE IF EXISTS Tournament;
 DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS Division;
+DROP TABLE IF EXISTS TournamentDivisionCapacity;
 
 
 CREATE TABLE User (
@@ -26,13 +28,18 @@ CREATE TABLE Tournament (
     RegistrationOpen INTEGER NOT NULL DEFAULT 1
 );
 
+CREATE TABLE Division (
+    DivisionId INTEGER PRIMARY KEY AUTOINCREMENT,
+    DivisionName TEXT NOT NULL UNIQUE
+);
 
 CREATE TABLE Team (
     TeamId INTEGER PRIMARY KEY AUTOINCREMENT,
     TeamName TEXT NOT NULL,
     DivisionId INTEGER NOT NULL,
     RegistrationPaid INTEGER NOT NULL DEFAULT 0,
-    PaymentDate TEXT NULL
+    PaymentDate TEXT NULL,
+    FOREIGN KEY (DivisionId) REFERENCES Division(DivisionId)
 );
 
 
@@ -60,9 +67,22 @@ CREATE TABLE TournamentRegistration (
 );
 
 
+
+CREATE TABLE TournamentDivisionCapacity (
+    TournamentDivisionCapacityId INTEGER PRIMARY KEY AUTOINCREMENT,
+    TournamentId INTEGER NOT NULL,
+    DivisionId INTEGER NOT NULL,
+    Capacity INTEGER NOT NULL,
+    FOREIGN KEY (TournamentId) REFERENCES Tournament(TournamentId),
+    FOREIGN KEY (DivisionId) REFERENCES Division(DivisionId),
+    UNIQUE (TournamentId, DivisionId) 
+    );
+
 CREATE INDEX IX_Player_TeamId ON Player(TeamId);
 CREATE INDEX IX_TournamentRegistration_TournamentId ON TournamentRegistration(TournamentId);
 CREATE INDEX IX_TournamentRegistration_TeamId ON TournamentRegistration(TeamId);
+CREATE INDEX IX_TournamentDivisionCapacity_TournamentId 
+    ON TournamentDivisionCapacity(TournamentId);
 
 --sample data for testing
 
@@ -70,6 +90,11 @@ INSERT INTO User (Username, Password)
 VALUES 
     ('admin', 'admin123');
 
+INSERT INTO Division (DivisionName) VALUES ('Men''s');
+INSERT INTO Division (DivisionName) VALUES ('Women''s');
+INSERT INTO Division (DivisionName) VALUES ('Mixed');
+INSERT INTO Division (DivisionName) VALUES ('Seniors');
+INSERT INTO Division (DivisionName) VALUES ('Juniors');
 
 INSERT INTO Tournament (Name, TournamentDate, Location, Capacity, RegistrationOpen)
 VALUES 

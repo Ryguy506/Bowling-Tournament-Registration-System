@@ -6,9 +6,11 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 	public class TournamentManagementService : ITournamentManagementService
 	{
 		private readonly ITournamentDao _tournamentDao;
-		public TournamentManagementService(ITournamentDao tournamentDao)
+		private readonly ITournamentDivisionCapacityDao _divisionCapacityDao;
+		public TournamentManagementService(ITournamentDao tournamentDao , ITournamentDivisionCapacityDao divisionCapacityDao)
 		{
 			_tournamentDao = tournamentDao;
+			_divisionCapacityDao = divisionCapacityDao;
 		}
 
 
@@ -25,6 +27,19 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 			};
 
 			_tournamentDao.Add(newTournament);
+
+
+			foreach (var division in tournament.DivisionCapacities)
+			{
+				var divisionCapacity = new TournamentDivisionCapacity
+				{
+					TournamentId = newTournament.TournamentId,
+					DivisionId = division.DivisionId,
+					Capacity = division.Capacity
+				};
+				_divisionCapacityDao.Add(divisionCapacity);
+			}
+
 			return newTournament.TournamentId;
 		}
 

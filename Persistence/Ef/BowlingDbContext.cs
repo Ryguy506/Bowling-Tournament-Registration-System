@@ -16,6 +16,10 @@ namespace Bowling_Tournament_Registration_System.Persistence.Ef
 		public DbSet<TournamentRegistration> TournamentRegistrations => Set<TournamentRegistration>();	
 		public DbSet<User> Users => Set<User>();
 
+		public DbSet<Division> Divisions => Set<Division>();
+
+		public DbSet<TournamentDivisionCapacity> TournamentDivisionCapacities => Set<TournamentDivisionCapacity>();
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Tournament>().ToTable("Tournament");
@@ -28,6 +32,8 @@ namespace Bowling_Tournament_Registration_System.Persistence.Ef
             .Property(tr => tr.Status)
 			.HasConversion<string>();
 			modelBuilder.Entity<User>().ToTable("User");
+			modelBuilder.Entity<Division>().ToTable("Division");
+			modelBuilder.Entity<TournamentDivisionCapacity>().ToTable("TournamentDivisionCapacity");
 		}
 	}
 }

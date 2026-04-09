@@ -9,16 +9,18 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 		private readonly ITournamentDao _tournamentDao;
 		private readonly ITournamentRegistrationDao _tournamentRegistrationDao;
 		private readonly IPlayerDao _playerDao;
-        private readonly ITournamentDivisionCapacityDao _divisionCapacityDao;
+		private readonly ITournamentDivisionCapacityDao _divisionCapacityDao;
 
-        public TournamentRegistrationService(ITeamDao teamDao, ITournamentDao tournamentDao , ITournamentRegistrationDao registrationDao, IPlayerDao playerDao, ITournamentDivisionCapacityDao divisionCapacityDao)
+
+		public TournamentRegistrationService(ITeamDao teamDao, ITournamentDao tournamentDao , ITournamentRegistrationDao registrationDao, IPlayerDao playerDao ,  ITournamentDivisionCapacityDao capacityDao)
         {
             _teamDao = teamDao;
             _tournamentDao = tournamentDao;
             _tournamentRegistrationDao = registrationDao;
             _playerDao = playerDao;
-            _divisionCapacityDao = divisionCapacityDao;
-        }
+			_divisionCapacityDao = capacityDao;
+
+		}
 
         public RegistrationResult RegisterTeam(int tournamentId, int teamId)
 		{
@@ -40,7 +42,7 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
                 .GetCountByTournamentAndDivision(tournamentId, team.DivisionId);
 
             int divisionCapacity = _divisionCapacityDao
-                .GetCapacity(tournamentId, team.DivisionId);
+                .GetDivisionCapacity(tournamentId, team.DivisionId);
 
             bool tournamentFull = totalRegistered >= tournament.Capacity;
             bool divisionFull = divisionRegistered >= divisionCapacity;
@@ -65,6 +67,7 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 
             registration.Status = RegistrationStatus.Confirmed;
             _tournamentRegistrationDao.Add(registration);
+			return RegistrationResult.Ok();
 
 		}
 

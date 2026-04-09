@@ -6,5 +6,6 @@
 		public DateTime TournamentDate { get; set; }
 		public string Location { get; set; }
 		public int Capacity { get; set; }
+		public List<DivisionCapacityRequest> DivisionCapacities { get; set; } = new();
 	}
 }
