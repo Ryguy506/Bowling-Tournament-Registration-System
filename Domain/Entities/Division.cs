@@ -2,7 +2,7 @@
 {
 	public class Division
 	{
-		public int Id { get; set; }
+		public int DivisionId { get; set; }
 		public string DivisionName { get; set; } = string.Empty;
 	}
 }

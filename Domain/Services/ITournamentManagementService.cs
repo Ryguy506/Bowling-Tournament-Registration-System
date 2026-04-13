@@ -5,7 +5,7 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 {
 	public interface ITournamentManagementService
 	{
-		int CreateTournament(TournamentRequest tournament);
+		TournamentResult CreateTournament(TournamentRequest tournament);
 		bool UpdateTournament(int tournamentId , TournamentRequest tournament);
 
 

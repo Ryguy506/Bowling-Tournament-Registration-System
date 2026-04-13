@@ -2,7 +2,7 @@
 {
 	public class TournamentDivisionCapacity
 	{
-		public int Id { get; set; }
+		public int TournamentDivisionCapacityId { get; set; }
 		public int TournamentId { get; set; }
 		public int DivisionId { get; set; }      
 		public int Capacity { get; set; }

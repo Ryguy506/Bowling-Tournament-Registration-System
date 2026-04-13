@@ -41,6 +41,7 @@ builder.Services.AddScoped<ITournamentReadModelGateway, TournamentReadModelGatew
 builder.Services.AddScoped<ITeamReadModelGateway, TeamReadModelGateway>();
 builder.Services.AddScoped<IPlayerReadModelGateway, PlayerReadModelGateway>();
 builder.Services.AddScoped<ITournamentDivisionCapacityDao, TournamentDivisionCapacityDao>();
+builder.Services.AddScoped<IDivisionReadModelGateway, DivisionReadModelGateway>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 	.AddCookie(options =>

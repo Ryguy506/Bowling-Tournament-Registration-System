@@ -14,13 +14,15 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
         private readonly ITournamentReadModelGateway _queries;
         private readonly ITournamentManagementService _service;
         private readonly ITournamentRegistrationService _RegService;
+        private readonly IDivisionReadModelGateway _divisionRead;
 
 
-        public AdminTournamentController(ITournamentReadModelGateway queries, ITournamentManagementService service, ITeamReadModelGateway teamQueries)
+        public AdminTournamentController(ITournamentReadModelGateway queries, ITournamentManagementService service, ITeamReadModelGateway teamQueries, IDivisionReadModelGateway divisionRead)
         {
             _queries = queries;
             _service = service;
             _teamQueries = teamQueries;
+            _divisionRead = divisionRead;
         }
 
         public IActionResult Index()
@@ -34,27 +36,39 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var model = new CreateTournamentVm
+            {
+				DivisionCapacities = _divisionRead.GetDivisionOptions()
+            };
+            return View(model);
         }
 
         [HttpPost]
         public IActionResult Create(CreateTournamentVm model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+            {
+		
+				return View(model);
+			}
 
             var tournamentRequest = new TournamentRequest
             {
                 Name = model.Name,
                 TournamentDate = model.Date,
                 Location = model.Location,
-                Capacity = model.Capacity
+                Capacity = model.Capacity,
+                DivisionCapacities = model.DivisionCapacities.Select(d => new DivisionCapacityRequest
+                {
+                    DivisionId = d.Id,
+                    Capacity = d.Capacity
+                }).ToList()
             };
-			var id = _service.CreateTournament(tournamentRequest);
+            var result = _service.CreateTournament(tournamentRequest);
 
-			if (id == 0)
+			if (!result.Success)
             {
-                ModelState.AddModelError("", "Failed to create tournament");
+                TempData["Error"] = result.ErrorMessage;
                 return View(model);
             }
 

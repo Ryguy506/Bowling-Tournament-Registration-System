@@ -12,15 +12,17 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
         private readonly ITeamReadModelGateway _teamQueries;
         private readonly ITournamentReadModelGateway _queries;
         private readonly ITournamentRegistrationService _service;
+        private readonly IDivisionReadModelGateway _divisionQueries;
 
-        public TournamentController(ITournamentReadModelGateway queries, ITeamReadModelGateway teamQueries, ITournamentRegistrationService service)
-        {
-            _queries = queries;
-            _service = service;
-            _teamQueries = teamQueries;
-        }
+		public TournamentController(ITournamentReadModelGateway queries, ITeamReadModelGateway teamQueries, ITournamentRegistrationService service, IDivisionReadModelGateway divisionQueries)
+		{
+			_queries = queries;
+			_service = service;
+			_teamQueries = teamQueries;
+			_divisionQueries = divisionQueries;
+		}
 
-        public IActionResult Index()
+		public IActionResult Index()
         {
             var tournaments = _queries.GetAll();
             return View(tournaments);
@@ -33,7 +35,8 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
             if (tournament == null)
                 return NotFound();
 
-            return View(tournament);
+
+			return View(tournament);
         }
 
         [HttpGet]

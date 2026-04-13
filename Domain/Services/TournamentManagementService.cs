@@ -14,8 +14,12 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 		}
 
 
-		public int CreateTournament(TournamentRequest tournament)
+		public TournamentResult CreateTournament(TournamentRequest tournament)
 		{
+
+			int totalDivisionCapacity = tournament.DivisionCapacities.Sum(d => d.Capacity);
+			if (totalDivisionCapacity != tournament.Capacity)
+				return TournamentResult.Fail("Total division capacities must equal tournament capacity");
 
 			var newTournament = new Tournament
 			{
@@ -40,7 +44,7 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 				_divisionCapacityDao.Add(divisionCapacity);
 			}
 
-			return newTournament.TournamentId;
+			return TournamentResult.Ok();
 		}
 
 
