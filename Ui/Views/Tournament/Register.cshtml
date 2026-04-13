@@ -9,14 +9,16 @@
         @foreach (var team in Model.Teams)
         {
             <div class="form-check border-bottom m-2">
-                @if (team.IsEligible)
+
+                <input type="radio" class="form-check-input" asp-for="SelectedTeamId" value="@team.Id" id="team_@team.Id" />
+                @* @if (team.IsEligible)
                 {
-                    <input type="radio" class="form-check-input" asp-for="SelectedTeamId" value="@team.Id" id="team_@team.Id" />
-                }
-                else
+                    
+                } *@
+                @* else
                 {
                     <input type="radio" class="form-check-input" disabled />
-                }
+                } *@
 
                 <label class="form-check-label w-100" for="team_@team.Id">
 
@@ -27,7 +29,7 @@
                             <small class="text-muted">@team.DivisionName</small>
                         </div>
 
-                        <div>
+                        @* <div>
                             @if (team.IsEligible)
                             {
                                 <span class="text-success">Eligible</span>
@@ -40,7 +42,7 @@
                             {
                                 <span class="text-danger">@team.ReasonNotEligible</span>
                             }
-                        </div>
+                        </div> *@
 
                     </div>
 

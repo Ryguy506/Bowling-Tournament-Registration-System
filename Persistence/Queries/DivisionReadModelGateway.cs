@@ -35,9 +35,14 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 			{
 		
 			DivisionName = d.DivisionName,
-			Capacity = tdc.Capacity
+			Capacity = tdc.Capacity,
+				RegisteredCount = _context.TournamentRegistrations
+					.Where(tr => tr.TournamentId == tournamentId
+					&& tr.Team.DivisionId == d.DivisionId
+					&& tr.Status == RegistrationStatus.Confirmed)
+					.Count()
 			})
 			.ToList();
-		}
+		} 
 	}
 }

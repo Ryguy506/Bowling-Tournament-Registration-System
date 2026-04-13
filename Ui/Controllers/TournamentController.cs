@@ -34,7 +34,7 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
 
             if (tournament == null)
                 return NotFound();
-
+            tournament.DivisionCapacities = _divisionQueries.GetDivisionCapacities(id);
 
 			return View(tournament);
         }
