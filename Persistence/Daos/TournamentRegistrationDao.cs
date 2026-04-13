@@ -16,12 +16,12 @@ namespace Bowling_Tournament_Registration_System.Persistence.Daos
 
 		public bool Exists(int tournamentId, int teamId)
 		{
-			return _db.TournamentRegistrations.Any(tr => tr.TournamentId == tournamentId && tr.TeamId == teamId);
+			return _db.TournamentRegistrations.Any(tr => tr.TournamentId == tournamentId && tr.TeamId == teamId && tr.Status != RegistrationStatus.Cancelled);
 		}
 
 		public int GetCountByTournament(int tournamentId)
 		{
-			return _db.TournamentRegistrations.Count(tr => tr.TournamentId == tournamentId);
+			return _db.TournamentRegistrations.Count(tr => tr.TournamentId == tournamentId && tr.Status == RegistrationStatus.Confirmed);
 		}
 
 		public void Add(TournamentRegistration registration)

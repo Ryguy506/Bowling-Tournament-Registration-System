@@ -47,6 +47,34 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
             bool tournamentFull = totalRegistered >= tournament.Capacity;
             bool divisionFull = divisionRegistered >= divisionCapacity;
 
+            var existing = _tournamentRegistrationDao
+                .GetById(tournamentId, teamId);
+
+            if (existing != null && existing.Status == RegistrationStatus.Cancelled)
+            {
+                if (tournamentFull || divisionFull)
+                {
+                    existing.Status = RegistrationStatus.Waitlisted;
+                    existing.WaitlistPosition =
+                        _tournamentRegistrationDao.GetWaitlistCount(tournamentId) + 1;
+                }
+                else
+                {
+                    existing.Status = RegistrationStatus.Confirmed;
+                    existing.WaitlistPosition = null;
+                }
+
+                existing.RegisteredOn = DateTime.UtcNow;
+
+                _tournamentRegistrationDao.SaveChanges();
+
+                PromoteWaitlist(tournamentId);
+
+                return existing.Status == RegistrationStatus.Confirmed
+                    ? RegistrationResult.Ok()
+                    : RegistrationResult.Waitlisted();
+            }
+
             var registration = new TournamentRegistration
             {
                 TournamentId = tournamentId,
@@ -67,7 +95,8 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 
             registration.Status = RegistrationStatus.Confirmed;
             _tournamentRegistrationDao.Add(registration);
-			return RegistrationResult.Ok();
+            PromoteWaitlist(tournamentId);
+            return RegistrationResult.Ok();
 
 		}
 
@@ -78,28 +107,64 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 			if (registration == null || registration.Status == RegistrationStatus.Cancelled)
 				return false;
 
-			registration.Status = RegistrationStatus.Cancelled;
+            var team = _teamDao.GetById(teamId);
+
+            registration.Status = RegistrationStatus.Cancelled;
 			_tournamentRegistrationDao.SaveChanges();
 
-			PromoteWaitlist(registration.TournamentId);
-			return true;
+            int divisionCapacity = _divisionCapacityDao
+				.GetDivisionCapacity(tournamentId, team.DivisionId);
+
+            PromoteWaitlist(registration.TournamentId);
+            _tournamentRegistrationDao.SaveChanges();
+            return true;
 		}
 
 		public void PromoteWaitlist(int tournamentId)
 		{
-			var waitlist = _tournamentRegistrationDao.GetAllWaitlist(tournamentId);
-			if (waitlist.Count == 0)
+            var waitlist = _tournamentRegistrationDao
+                .GetAllWaitlist(tournamentId)
+                .Where(w => w.Status == RegistrationStatus.Waitlisted)
+                .OrderBy(w => w.WaitlistPosition)
+                .ToList();
+            if (waitlist.Count == 0)
 				return;
-			var nextInLine = waitlist.OrderBy(w => w.WaitlistPosition).First();
 
-			nextInLine.Status = RegistrationStatus.Confirmed;
-			nextInLine.WaitlistPosition = null;
-			foreach (var w in waitlist.Where(w => w.WaitlistPosition > 1))
-			{
-				w.WaitlistPosition -= 1;
-			}
-			_tournamentRegistrationDao.SaveChanges();
-		}
+            TournamentRegistration promoted = null;
+
+            foreach (var entry in waitlist)
+            {
+                var team = _teamDao.GetById(entry.TeamId);
+
+                int divisionRegistered = _tournamentRegistrationDao
+                    .GetCountByTournamentAndDivision(tournamentId, team.DivisionId);
+
+                int divisionCapacity = _divisionCapacityDao
+                    .GetDivisionCapacity(tournamentId, team.DivisionId);
+
+                if (divisionRegistered < divisionCapacity)
+                {
+                    promoted = entry;
+                    break;
+                }
+            }
+
+            if (promoted == null)
+                return;
+
+            promoted.Status = RegistrationStatus.Confirmed;
+            promoted.WaitlistPosition = null;
+
+            var remaining = waitlist.Where(w => w != promoted).ToList();
+
+            int position = 1;
+            foreach (var w in remaining)
+            {
+                w.WaitlistPosition = position++;
+            }
+
+            _tournamentRegistrationDao.SaveChanges();
+        }
 
 
 	}

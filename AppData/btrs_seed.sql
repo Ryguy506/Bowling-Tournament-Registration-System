@@ -7,10 +7,10 @@ PRAGMA foreign_keys = ON;
 DROP TABLE IF EXISTS TournamentRegistration;
 DROP TABLE IF EXISTS Player;
 DROP TABLE IF EXISTS Team;
-DROP TABLE IF EXISTS Tournament;
 DROP TABLE IF EXISTS User;
-DROP TABLE IF EXISTS Division;
 DROP TABLE IF EXISTS TournamentDivisionCapacity;
+DROP TABLE IF EXISTS Division;
+DROP TABLE IF EXISTS Tournament;
 
 
 CREATE TABLE User (
