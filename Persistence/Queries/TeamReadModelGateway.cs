@@ -12,34 +12,38 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 			_context = context;
 		}
 
-		public List<TeamOption> GetAll() { 
-			return _context.Teams.Select(t => new TeamOption
-			{
-				Id = t.TeamId,
-				TeamName = t.TeamName,
-				DivisionId = t.DivisionId,
-				RegistrationPaid = t.RegistrationPaid,
-				PaymentDate = t.PaymentDate ?? null
-
-
-
-			}).ToList();
-		
+		public List<TeamOption> GetAll()
+		{
+			return _context.Teams
+				.Join(_context.Divisions,
+					t => t.DivisionId,
+					d => d.DivisionId,
+					(t, d) => new TeamOption
+					{
+						Id = t.TeamId,
+						TeamName = t.TeamName,
+						DivisionId = t.DivisionId,
+						DivisionName = d.DivisionName,
+						RegistrationPaid = t.RegistrationPaid,
+						PaymentDate = t.PaymentDate
+					})
+				.ToList();
 		}
 
 
-		public TeamOption GetById(int id) { 
-		
-			return _context.Teams.Where(t => t.TeamId == id).Select(t => new TeamOption
+		public TeamOption GetById(int id) {
+
+			return _context.Teams.Where(t => t.TeamId == id).Join(_context.Divisions, t => t.DivisionId, d => d.DivisionId, (t, d) => new TeamOption
 			{
 				Id = t.TeamId,
 				TeamName = t.TeamName,
 				DivisionId = t.DivisionId,
+				DivisionName = d.DivisionName,
 				RegistrationPaid = t.RegistrationPaid,
-				PaymentDate = t.PaymentDate.Value
-
+				PaymentDate = t.PaymentDate
 			}).FirstOrDefault();
-		
+
+
 		}
 
 

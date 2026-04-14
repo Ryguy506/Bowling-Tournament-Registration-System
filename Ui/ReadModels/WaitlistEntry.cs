@@ -4,5 +4,7 @@
 	{
 		public int Position { get; set; }
 		public string TeamName { get; set; }
+
+		public string DivisionName { get; set; }
 	}
 }
