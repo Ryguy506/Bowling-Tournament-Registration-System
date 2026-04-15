@@ -33,7 +33,7 @@ namespace Bowling_Tournament_Registration_System.Persistence.Queries
 			d => d.DivisionId,
 			(tdc, d) => new DivisionCapacityReadModel
 			{
-		
+			DivisionId = tdc.DivisionId,
 			DivisionName = d.DivisionName,
 			Capacity = tdc.Capacity,
 				RegisteredCount = _context.TournamentRegistrations

@@ -1,6 +1,7 @@
 using Bowling_Tournament_Registration_System.Domain.Dtos;
 using Bowling_Tournament_Registration_System.Domain.Services;
 using Bowling_Tournament_Registration_System.Ui.Queries;
+using Bowling_Tournament_Registration_System.Ui.ReadModels;
 using Bowling_Tournament_Registration_System.Ui.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -81,8 +82,8 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
         {
             var tournament = _queries.GetById(id);
 
-            var divisions = _divisionRead.GetDivisionOptions();
-            var capacities = _divisionRead.GetDivisionCapacities(id);
+            var divisions = _divisionRead.GetDivisionCapacities(id);
+			
 
             if (tournament == null)
                 return NotFound();
@@ -95,12 +96,11 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
                 Location = tournament.Location,
                 Capacity = tournament.Capacity,
 
-                DivisionCapacities = divisions.Select(d => new DivisionCapacityInput
+                DivisionCapacities = divisions.Select(d => new DivisionOption
                 {
-                    Id = d.Id,
-                    Name = d.Name, 
-                    Capacity = capacities
-                        .FirstOrDefault(c => c.DivisionId == d.Id)?.Capacity ?? 0
+                    Id = d.DivisionId,
+                    Name = d.DivisionName, 
+                    Capacity = d.Capacity
                 }).ToList()
             };
 
@@ -129,10 +129,10 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
             };
             var result = _service.UpdateTournament(model.Id, tournamentRequest);
 
-            if (!result)
+            if (!result.Success)
             {
-                ModelState.AddModelError("", "Error");
-                return View(model);
+				TempData["Error"] = result.ErrorMessage;
+				return View(model);
             }
 
             return RedirectToAction("Details" ,"Tournament", new { id = model.Id });

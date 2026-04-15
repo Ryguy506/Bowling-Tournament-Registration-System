@@ -49,12 +49,17 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 
 
 
-		public bool UpdateTournament(int tournamentId, TournamentRequest tournament)
+		public TournamentResult UpdateTournament(int tournamentId, TournamentRequest tournament)
 		{
 			var existingTournament = _tournamentDao.GetById(tournamentId);
-			if (existingTournament == null) return false;
+			if (existingTournament == null) return TournamentResult.Fail("Tournament not found");
+			
+			int totalDivisionCapacity = tournament.DivisionCapacities.Sum(d => d.Capacity);
 
-            existingTournament.Name = tournament.Name;
+			if (totalDivisionCapacity != tournament.Capacity)
+				return TournamentResult.Fail("Total division capacities must equal tournament capacity");
+
+			existingTournament.Name = tournament.Name;
             existingTournament.TournamentDate = tournament.TournamentDate;
             existingTournament.Location = tournament.Location;
             existingTournament.Capacity = tournament.Capacity;
@@ -82,7 +87,7 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
                 }
             }
 
-            return true;
+            return TournamentResult.Ok();
         }
 	}
 }
