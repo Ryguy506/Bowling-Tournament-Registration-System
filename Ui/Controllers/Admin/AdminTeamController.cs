@@ -13,12 +13,14 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
 		private readonly ITeamReadModelGateway _Teamqueries;
 		private readonly IPlayerReadModelGateway _Playerqueries;
 		private readonly ITeamManagementService _service;
+		private readonly IDivisionReadModelGateway _divisionQueries;
 
-		public AdminTeamController(ITeamReadModelGateway Tqueries, IPlayerReadModelGateway Pqueries,  ITeamManagementService service)
+		public AdminTeamController(ITeamReadModelGateway Tqueries, IPlayerReadModelGateway Pqueries,  ITeamManagementService service , IDivisionReadModelGateway division)
 		{
 			_service = service;
 			_Teamqueries = Tqueries;
 			_Playerqueries = Pqueries;
+			_divisionQueries = division;
 		}
 		public IActionResult Index()
 		{
@@ -30,9 +32,10 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
         [HttpGet]
         public IActionResult Create()
         {
-			var model = new CreateTeamVm();
 
-            return View(model);
+			var model = new CreateTeamVm();
+			model.Divisions = _divisionQueries.GetDivisionOptions();
+			return View(model);
         }
 
         [HttpPost]
@@ -40,7 +43,7 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
         {
             if (!ModelState.IsValid)
             {
-                model.Divisions = _Teamqueries.GetAll();
+				model.Divisions = _divisionQueries.GetDivisionOptions();
                 return View(model);
             }
 
@@ -55,7 +58,7 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
             if (teamId <= 0)
             {
                 TempData["Error"] = "Failed to create team.";
-                model.Divisions = _Teamqueries.GetAll();
+                model.Divisions = _divisionQueries.GetDivisionOptions();
                 return View(model);
             }
 
@@ -70,7 +73,9 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers.Admin
 			{
 				Team = _Teamqueries.GetById(id),
 				PlayersOnTeam = _Playerqueries.GetAllFromTeam(id),
-				AvailablePlayers = _Playerqueries.GetAllAvailablePlayers()
+				AvailablePlayers = _Playerqueries.GetAllAvailablePlayers(),
+				Divisions = _divisionQueries.GetDivisionOptions(),
+				
 			};
 			return View(model);
 		}

@@ -1,18 +1,26 @@
 ﻿@model Bowling_Tournament_Registration_System.Ui.ViewModels.CreateTeamVm
 
-<h2>Create Team</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Create Team</h2>
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label asp-for="TeamName" class="form-label"></label>
+            <input asp-for="TeamName" class="form-control" />
+            <span asp-validation-for="TeamName" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DivisionId" class="form-label">Division</label>
+            <select asp-for="DivisionId" class="form-select">
+                
+                <option value="">-- Select Division --</option>
+                @foreach (var div in Model.Divisions)
+                {
+                   <option value="@div.Id">@div.Name</option>
+                }
 
-<form asp-action="Create" method="post">
-
-	<div>
-		<label>Team Name</label>
-		<input asp-for="TeamName" />
-	</div>
-
-	<div>
-		<label>Division</label>
-		<input asp-for="DivisionId" />
-	</div>
-
-	<button type="submit">Create</button>
-</form>
+            </select>
+            <span asp-validation-for="DivisionId" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>

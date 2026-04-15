@@ -5,6 +5,8 @@ namespace Bowling_Tournament_Registration_System.Ui.ViewModels
 	{
 		public TeamOption Team { get; set; }
 
+		public List<DivisionOption> Divisions { get; set; } = new();
+
 		public List<PlayerOption> PlayersOnTeam { get; set; }
 
 		public List<PlayerOption> AvailablePlayers { get; set; }

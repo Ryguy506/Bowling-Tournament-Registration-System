@@ -1,4 +1,4 @@
-﻿@model Bowling_Tournament_Registration_System.Ui.ViewModels.EditTeamVm
+﻿ @model Bowling_Tournament_Registration_System.Ui.ViewModels.EditTeamVm
 
 @{
     ViewData["Title"] = "Edit Team";
@@ -20,7 +20,18 @@
 
                 <div class="mb-3">
                     <label class="form-label">Division</label>
-                    <input type="number" name="DivisionId" value="@Model.Team.DivisionId" class="form-control" />
+                    @* <input type="number" name="DivisionId" value="@Model.Team.DivisionId" class="form-control" /> *@
+                    <select name="DivisionId" class="form-select">
+
+                        <option value="@Model.Team.DivisionId"> @Model.Team.DivisionName </option>
+                        @foreach (var div in Model.Divisions)
+                        {
+                            if (div.Id != Model.Team.DivisionId) {
+                            <option value="@div.Id">@div.Name</option>
+                            }
+                        }
+
+                    </select>
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save Changes</button>

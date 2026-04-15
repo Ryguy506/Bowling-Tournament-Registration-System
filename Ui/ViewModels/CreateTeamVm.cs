@@ -12,6 +12,6 @@ namespace Bowling_Tournament_Registration_System.Ui.ViewModels
         public int DivisionId { get; set; }
 
         
-        public List<TeamOption> Divisions { get; set; } = new();
+        public List<DivisionOption> Divisions { get; set; } = new();
     }
 }
