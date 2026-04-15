@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Bowling_Tournament_Registration_System.Ui.ReadModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bowling_Tournament_Registration_System.Ui.ViewModels
 {
@@ -17,5 +18,7 @@ namespace Bowling_Tournament_Registration_System.Ui.ViewModels
 
         [Range(1, 1000)]
         public int Capacity { get; set; }
+
+        public List<DivisionCapacityInput> DivisionCapacities { get; set; } = new();
     }
 }

@@ -1,7 +1,8 @@
 ﻿
-using Bowling_Tournament_Registration_System.Domain.Entities;
 using Bowling_Tournament_Registration_System.Domain.Daos;
+using Bowling_Tournament_Registration_System.Domain.Entities;
 using Bowling_Tournament_Registration_System.Persistence.Ef;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bowling_Tournament_Registration_System.Persistence.Daos
 {
@@ -21,7 +22,20 @@ namespace Bowling_Tournament_Registration_System.Persistence.Daos
 			return capacity?.Capacity ?? 0;
 		}
 
-		public void Add(TournamentDivisionCapacity capacity)
+        public TournamentDivisionCapacity GetByTournamentAndDivision(int tournamentId, int divisionId)
+        {
+            return _db.TournamentDivisionCapacities
+                .FirstOrDefault(dc => dc.TournamentId == tournamentId && dc.DivisionId == divisionId);
+        }
+
+        public void Update(TournamentDivisionCapacity capacity)
+        {
+            _db.TournamentDivisionCapacities.Update(capacity);
+            _db.SaveChanges();
+        }
+
+
+        public void Add(TournamentDivisionCapacity capacity)
 		{
 			_db.TournamentDivisionCapacities.Add(capacity);
 			_db.SaveChanges();

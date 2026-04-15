@@ -81,6 +81,9 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
         {
             var tournament = _queries.GetById(id);
 
+            var divisions = _divisionRead.GetDivisionOptions();
+            var capacities = _divisionRead.GetDivisionCapacities(id);
+
             if (tournament == null)
                 return NotFound();
 
@@ -90,8 +93,17 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
                 Name = tournament.Name,
                 Date = tournament.Date,
                 Location = tournament.Location,
-                Capacity = tournament.Capacity
+                Capacity = tournament.Capacity,
+
+                DivisionCapacities = divisions.Select(d => new DivisionCapacityInput
+                {
+                    Id = d.Id,
+                    Name = d.Name, 
+                    Capacity = capacities
+                        .FirstOrDefault(c => c.DivisionId == d.Id)?.Capacity ?? 0
+                }).ToList()
             };
+
 
             return View(model);
         }
@@ -107,16 +119,22 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
                 Name = model.Name,
                 TournamentDate = model.Date,
                 Location = model.Location,
-                Capacity = model.Capacity
-            };
-			var result = _service.UpdateTournament(model.Id, tournamentRequest);
+                Capacity = model.Capacity,
 
-			if (!result)
+                DivisionCapacities = model.DivisionCapacities.Select(dc => new DivisionCapacityRequest
+                {
+                    DivisionId = dc.Id,
+                    Capacity = dc.Capacity
+                }).ToList()
+            };
+            var result = _service.UpdateTournament(model.Id, tournamentRequest);
+
+            if (!result)
             {
                 ModelState.AddModelError("", "Error");
                 return View(model);
             }
-                
+
             return RedirectToAction("Details" ,"Tournament", new { id = model.Id });
         }
     }

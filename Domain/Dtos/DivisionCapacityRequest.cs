@@ -3,6 +3,7 @@
 	public class DivisionCapacityRequest
 	{
 		public int DivisionId { get; set; }
+	
 		public int Capacity { get; set; }
 	}
 }

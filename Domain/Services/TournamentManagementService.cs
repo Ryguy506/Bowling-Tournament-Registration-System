@@ -52,14 +52,37 @@ namespace Bowling_Tournament_Registration_System.Domain.Services
 		public bool UpdateTournament(int tournamentId, TournamentRequest tournament)
 		{
 			var existingTournament = _tournamentDao.GetById(tournamentId);
-			if (existingTournament == null) return false; 
-			
-			existingTournament.Name = tournament.Name;
-			existingTournament.TournamentDate = tournament.TournamentDate;
-			existingTournament.Location = tournament.Location;
-			existingTournament.Capacity = tournament.Capacity;
-			_tournamentDao.Update(existingTournament);
-			return true;
-		}
+			if (existingTournament == null) return false;
+
+            existingTournament.Name = tournament.Name;
+            existingTournament.TournamentDate = tournament.TournamentDate;
+            existingTournament.Location = tournament.Location;
+            existingTournament.Capacity = tournament.Capacity;
+
+            _tournamentDao.Update(existingTournament);
+
+            foreach (var dc in tournament.DivisionCapacities)
+            {
+                var existing = _divisionCapacityDao
+                    .GetByTournamentAndDivision(tournamentId, dc.DivisionId);
+
+                if (existing != null)
+                {
+                    existing.Capacity = dc.Capacity;
+                    _divisionCapacityDao.Update(existing);
+                }
+                else
+                {
+                    _divisionCapacityDao.Add(new TournamentDivisionCapacity
+                    {
+                        TournamentId = tournamentId,
+                        DivisionId = dc.DivisionId,
+                        Capacity = dc.Capacity
+                    });
+                }
+            }
+
+            return true;
+        }
 	}
 }

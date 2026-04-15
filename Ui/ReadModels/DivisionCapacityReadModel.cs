@@ -2,6 +2,7 @@
 {
     public class DivisionCapacityReadModel
     {
+        public int DivisionId { get; set; }
         public string DivisionName { get; set; }
         public int Capacity { get; set; }
         public int RegisteredCount { get; set; }

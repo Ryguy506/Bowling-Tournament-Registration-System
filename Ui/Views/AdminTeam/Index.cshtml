@@ -17,6 +17,7 @@
                 <th>Registration Paid</th>
                 <th>Payment Date</th>
                 <th></th>
+                <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -24,22 +25,24 @@
                 {
                     <tr>
                         <td>@team.TeamName</td>
-                        <td>@team.DivisionId</td>
+                        <td>@team.DivisionName</td>
                         <td>@(team.RegistrationPaid ? "Yes" : "No")</td>
                     <td>@(team.RegistrationPaid ? team.PaymentDate?.ToShortDateString() : "")</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@team.Id" class="btn btn-sm btn-primary">Edit</a>
-                        @if (!team.RegistrationPaid)
-                        {
-                            <form asp-action="MarkAsPaid" method="post">
-                                <input type="hidden" name="id" value="@team.Id" />
-                                <button type="submit">Mark as Paid</button>
-                            </form>
-                        }
-                        else
-                        {
-                            <button disabled>Already Paid</button>
-                        }
+                        </td>
+                        <td>
+                            @if (!team.RegistrationPaid)
+                            {
+                                <form asp-action="MarkAsPaid" method="post">
+                                    <input type="hidden" name="id" value="@team.Id" />
+                                    <button type="submit">Mark as Paid</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <button disabled>Already Paid</button>
+                            }
                         </td>
                     </tr>
                 }
