@@ -30,14 +30,17 @@ namespace Bowling_Tournament_Registration_System.Ui.Controllers
 
         public IActionResult Details(int id)
         {
-            var tournament = _queries.GetById(id);
 
-            if (tournament == null)
-                return NotFound();
-            tournament.DivisionCapacities = _divisionQueries.GetDivisionCapacities(id);
+			var tournament = _queries.GetById(id);
+			if (tournament == null)
+				return NotFound();
 
+			_service.PromoteWaitlist(id);
+
+			tournament = _queries.GetById(id); // reload after promotion
+			tournament.DivisionCapacities = _divisionQueries.GetDivisionCapacities(id);
 			return View(tournament);
-        }
+		}
 
         [HttpGet]
         public IActionResult Register(int id) 
