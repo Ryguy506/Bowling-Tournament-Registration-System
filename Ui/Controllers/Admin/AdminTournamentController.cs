@@ -73,7 +73,7 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
                 return View(model);
             }
 
-            TempData["SuccessMessage"] = "Tournament created successfully!";
+            TempData["Success"] = "Tournament created successfully!";
             return RedirectToAction("Index");
         }
 
@@ -135,7 +135,8 @@ namespace Bowling_Tournament_Registration_System.Ui.Admin.Controllers
 				return View(model);
             }
 
-            return RedirectToAction("Details" ,"Tournament", new { id = model.Id });
+			TempData["Success"] = "Tournament updated successfully!";
+			return RedirectToAction("Details" ,"Tournament", new { id = model.Id });
         }
     }
 }

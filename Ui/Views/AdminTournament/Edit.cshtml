@@ -1,8 +1,9 @@
 ﻿@model Bowling_Tournament_Registration_System.Ui.ViewModels.EditTournamentVm
 
-<h2>Edit Tournament</h2>
 
-<div class="container mt-4">
+
+<div class="container mt-4 max" >
+    <h2>Edit Tournament</h2>
         <form asp-action="Edit" method="post">
 
             <input type="hidden" asp-for="Id" />
@@ -49,7 +50,11 @@
                     </div>
                 }
             </div>
-
+            <div class="d-flex justify-content-between align-items-center">
+            <a asp-action="Index" asp-controller="AdminTournament" class="btn btn-secondary">Back to Tournaments</a>
             <button type="submit" class="btn btn-primary">Update Tournament</button>
+            
+             </div>
         </form>
+        
 </div>

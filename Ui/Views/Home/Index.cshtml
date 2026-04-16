@@ -2,22 +2,33 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <a asp-controller="Tournament" asp-action="Index" class="btn btn-primary">View Tournaments</a>
+<div class="text-center py-5">
+    <h1 class="display-5 fw-normal">Saint John Bowling League</h1>
+    <p class="text-muted">View upcoming tournaments and register your team.</p>
+    <a asp-controller="Tournament" asp-action="Index" class="btn btn-primary btn-lg px-4">View Tournaments</a>
 </div>
 
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="text-center mt-2">
-        <a asp-controller="AdminTournament" asp-action="Index" class="btn btn-warning">Manage Tournaments</a>
-        <a asp-controller="AdminTeam" asp-action="Index" class="btn btn-warning">Manage Teams</a>
-        <a asp-controller="Auth" asp-action="Logout" class="btn btn-danger">Logout</a>
-    </div>
-}
-else
-{
-    <div class="text-center mt-2">
-        <a asp-controller="Auth" asp-action="Login" class="btn btn-secondary">Admin Login</a>
+    <p class="text-center text-uppercase text-muted small mb-3">Admin</p>
+    <div class="row justify-content-center g-3 px-4 pb-5">
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Manage Tournaments</h6>
+                    <p class="card-text text-muted small">Create and configure tournaments.</p>
+                    <a asp-controller="AdminTournament" asp-action="Index" class="btn btn-outline-secondary btn-sm w-100">Open</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Manage Teams</h6>
+                    <p class="card-text text-muted small">Add teams and track payments.</p>
+                    <a asp-controller="AdminTeam" asp-action="Index" class="btn btn-outline-secondary btn-sm w-100">Open</a>
+                </div>
+            </div>
+        </div>
     </div>
 }

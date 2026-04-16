@@ -12,44 +12,49 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Bowling_Tournament_Registration_System</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-             
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Bowling Tournaments</a>
+                
+                <div class="navbar justify-content-end">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Auth" asp-action="Logout" class="btn btn-danger btn-sm">Log out</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-secondary btn-sm">Admin Login</a>
+                    }
+                </div>
             </div>
         </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success mx-3 mt-3">
-                    @TempData["Success"]
-                </div>
-            }
-
-            @if (TempData["Error"] != null)
-            {
-                <div class="alert alert-danger mx-3 mt-3">
-                    @TempData["Error"]
-                </div>
-            }
-            @if (TempData["Info"] != null)
-            {
-                <div class="alert alert-info mx-3 mt-3">
-                    @TempData["Info"]
-                </div>
-			}
+            <div style="position: fixed; top: 70px; right: 1rem; z-index: 1050; min-width: 300px;">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success shadow-sm">
+                        @TempData["Success"]
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger shadow-sm">
+                        @TempData["Error"]
+                    </div>
+                }
+                @if (TempData["Info"] != null)
+                {
+                    <div class="alert alert-info shadow-sm">
+                        @TempData["Info"]
+                    </div>
+                }
+            </div>
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Bowling_Tournament_Registration_System - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+        
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
